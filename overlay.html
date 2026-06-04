@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XERONATE Overlay</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:transparent;
+font-family:Arial,sans-serif;
+}
+
+#notif{
+position:fixed;
+top:20px;
+right:-500px;
+width:350px;
+background:#a00028;
+color:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+transition:0.5s;
+}
+
+#nama{
+font-size:22px;
+font-weight:bold;
+}
+
+#nominal{
+font-size:18px;
+margin-top:8px;
+}
+
+#pesan{
+margin-top:10px;
+font-size:16px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="notif">
+
+<div id="nama">
+XERON
+</div>
+
+<div id="nominal">
+Rp 10.000
+</div>
+
+<div id="pesan">
+Halo bang!
+</div>
+
+</div>
+
+<script>
+
+function tampilkanDonasi(){
+
+let data = localStorage.getItem("donasi");
+
+if(!data){
+return;
+}
+
+data = JSON.parse(data);
+
+document.getElementById("nama").innerText =
+"🎉 " + data.nama;
+
+document.getElementById("nominal").innerText =
+"Donasi Rp " + data.nominal;
+
+document.getElementById("pesan").innerText =
+data.pesan;
+
+const notif =
+document.getElementById("notif");
+
+notif.style.right = "20px";
+
+setTimeout(()=>{
+notif.style.right = "-500px";
+},7000);
+
+}
+
+setInterval(tampilkanDonasi,3000);
+
+</script>
+
+</body>
+</html>
