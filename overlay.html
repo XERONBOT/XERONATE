@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Overlay XERONATE</title>
+
+<style>
+body{
+margin:0;
+background:transparent;
+overflow:hidden;
+font-family:Arial;
+}
+
+#box{
+position:absolute;
+top:20px;
+right:20px;
+
+background:#111;
+color:white;
+
+padding:20px;
+border-radius:15px;
+
+width:350px;
+
+display:none;
+
+animation:slide 0.5s;
+}
+
+@keyframes slide{
+from{
+transform:translateX(400px);
+}
+to{
+transform:translateX(0);
+}
+}
+
+.nama{
+font-size:24px;
+font-weight:bold;
+}
+
+.nominal{
+font-size:30px;
+color:#00ff88;
+}
+
+.pesan{
+margin-top:10px;
+}
+</style>
+
+</head>
+<body>
+
+<div id="box">
+<div class="nama" id="nama"></div>
+<div class="nominal" id="nominal"></div>
+<div class="pesan" id="pesan"></div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+query,
+orderBy,
+limit,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBIJWltMdeQb4zp1c71146hHfv0SFUTcSg",
+authDomain: "xeronate.firebaseapp.com",
+projectId: "xeronate",
+storageBucket: "xeronate.firebasestorage.app",
+messagingSenderId: "82543259196",
+appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const q = query(
+collection(db,"donasi"),
+orderBy("waktu","desc"),
+limit(1)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+snapshot.forEach((doc)=>{
+
+const d = doc.data();
+
+document.getElementById("nama").innerText =
+d.nama || "-";
+
+document.getElementById("nominal").innerText =
+"Rp " + (d.nominal || 0);
+
+document.getElementById("pesan").innerText =
+d.pesan || "";
+
+document.getElementById("box").style.display =
+"block";
+
+setTimeout(()=>{
+document.getElementById("box").style.display =
+"none";
+},10000);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
