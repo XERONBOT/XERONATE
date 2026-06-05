@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin XERONATE</title>
+
+<style>
+body{
+font-family:Arial;
+background:#111;
+color:white;
+text-align:center;
+padding:30px;
+}
+
+#panel{
+display:none;
+}
+
+button{
+padding:10px 20px;
+margin-top:10px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Admin Login XERONATE</h2>
+
+<button onclick="login()">Login dengan Google</button>
+
+<div id="panel">
+
+<h2>Dashboard Admin</h2>
+<div id="list"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth,
+signInWithPopup,
+GoogleAuthProvider
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "ISI",
+authDomain: "xeronate.firebaseapp.com",
+projectId: "xeronate",
+storageBucket: "xeronate.firebasestorage.app",
+messagingSenderId: "82543259196",
+appId: "ISI"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const provider = new GoogleAuthProvider();
+
+window.login = async function(){
+
+try{
+
+const result = await signInWithPopup(auth, provider);
+
+const email = result.user.email;
+
+// 🔒 GANTI EMAIL ADMIN KAMU DI SINI
+if(email === "aruelzta9@gmail.com"){
+
+document.getElementById("panel").style.display = "block";
+
+loadData();
+
+}else{
+
+alert("Bukan admin!");
+auth.signOut();
+
+}
+
+}catch(e){
+
+alert(e.message);
+
+}
+
+}
+
+function loadData(){
+
+const list = document.getElementById("list");
+
+onSnapshot(collection(db,"donasi"), (snap)=>{
+
+list.innerHTML="";
+
+snap.forEach(doc=>{
+
+const d = doc.data();
+
+list.innerHTML += `
+<div style="background:#222;margin:10px;padding:10px">
+<b>${d.nama}</b><br>
+Rp ${d.nominal}<br>
+${d.pesan}
+</div>
+`;
+
+});
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
