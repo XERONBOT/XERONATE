@@ -61,7 +61,17 @@ box-shadow:0 0 20px rgba(0,0,0,.4);
 
 animation:masuk .5s ease;
 }
+#mediaShare{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+z-index:9999;
+}
 
+#ytPlayer{
+border-radius:15px;
+}
 @keyframes masuk{
 from{
 opacity:0;
@@ -110,7 +120,16 @@ Rp 0 / Rp 500000
 
 </div>
 <div id="box">
-
+<div id="mediaShare" style="display:none;">
+  <iframe
+    id="ytPlayer"
+    width="800"
+    height="450"
+    src=""
+    allow="autoplay"
+    frameborder="0">
+  </iframe>
+</div>
 <div class="nama" id="nama"></div>
 <div class="nominal" id="nominal"></div>
 <div class="pesan" id="pesan"></div>
@@ -197,6 +216,33 @@ document.getElementById("notifAudio")
 bacaPesan(
 `${d.nama} berdonasi ${d.nominal} rupiah`
 );
+if(d.youtube){
+
+const videoId =
+getYoutubeId(d.youtube);
+
+if(videoId){
+
+document.getElementById("mediaShare")
+.style.display = "block";
+
+document.getElementById("ytPlayer")
+.src =
+`https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+setTimeout(()=>{
+
+document.getElementById("mediaShare")
+.style.display = "none";
+
+document.getElementById("ytPlayer")
+.src = "";
+
+},30000);
+
+}
+
+}  
 }
 document.getElementById("nama").innerText =
 d.nama || "-";
@@ -219,7 +265,16 @@ document.getElementById("box").style.display =
 
 });
 function bacaPesan(teks){
+function getYoutubeId(url){
 
+const reg =
+/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
+
+const match = url.match(reg);
+
+return match ? match[1] : null;
+
+}
 const suara = new SpeechSynthesisUtterance(teks);
 
 suara.lang = "id-ID";
