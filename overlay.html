@@ -152,7 +152,8 @@ collection,
 query,
 orderBy,
 limit,
-onSnapshot
+onSnapshot,
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -167,17 +168,23 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
 const TARGET = 500000;
-const q = query(
-collection(db,"donasi"),
-orderBy("waktu","desc"),
-limit(1)
-);
+
 let lastId = "";
-import {
-getDocs
+
+function bacaPesan(teks){
+
+const suara =
+new SpeechSynthesisUtterance(teks);
+
+suara.lang = "id-ID";
+suara.rate = 1;
+suara.pitch = 1;
+
+speechSynthesis.speak(suara);
+
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 async function updateTarget(){
 
@@ -204,16 +211,29 @@ document.getElementById("barFill").style.width =
 persen + "%";
 
 }
+
+const q = query(
+collection(db,"donasi"),
+orderBy("waktu","desc"),
+limit(1)
+);
+
 onSnapshot(q,(snapshot)=>{
+
 updateTarget();
+
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
+
 if(lastId === ""){
 
 lastId = doc.id;
+return;
 
-}else if(doc.id !== lastId){
+}
+
+if(doc.id !== lastId){
 
 lastId = doc.id;
 
@@ -222,39 +242,19 @@ document.getElementById("notifAudio");
 
 audio.currentTime = 0;
 
-audio.play().catch(err => console.log(err));
+audio.play()
+.catch(err => console.log(err));
 
-setTimeout(() => {
+setTimeout(()=>{
 
 bacaPesan(
 `${d.nama} berdonasi ${d.nominal} rupiah`
 );
 
-if(d.youtube){
-
-document.getElementById("mediaShare")
-.style.display = "block";
-
-document.getElementById("mediaShare")
-.style.background = "red";
-
-document.getElementById("ytPlayer")
-.src =
-"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
-
-setTimeout(()=>{
-
-document.getElementById("mediaShare")
-.style.display = "none";
-
-document.getElementById("ytPlayer")
-.src = "";
-
-},30000);
+},1500);
 
 }
 
-},1500);
 document.getElementById("nama").innerText =
 d.nama || "-";
 
@@ -268,33 +268,16 @@ document.getElementById("box").style.display =
 "block";
 
 setTimeout(()=>{
+
 document.getElementById("box").style.display =
 "none";
+
 },10000);
 
 });
 
 });
-function bacaPesan(teks){
-function getYoutubeId(url){
 
-const reg =
-/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
-
-const match = url.match(reg);
-
-return match ? match[1] : null;
-
-}
-const suara = new SpeechSynthesisUtterance(teks);
-
-suara.lang = "id-ID";
-suara.rate = 1;
-suara.pitch = 1;
-
-speechSynthesis.speak(suara);
-
-}
 document
 .getElementById("startAudio")
 .onclick = () => {
@@ -306,7 +289,6 @@ audio.play()
 .then(()=>{
 
 audio.pause();
-
 audio.currentTime = 0;
 
 });
@@ -316,6 +298,7 @@ new SpeechSynthesisUtterance("Audio aktif")
 );
 
 };
+
 </script>
 </body>
 </html>
