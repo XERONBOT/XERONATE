@@ -118,7 +118,9 @@ lastId = doc.id;
 
 lastId = doc.id;
 
-document.getElementById("notifAudio").play();
+document.getElementById("notifAudio")
+.play()
+.catch(err => console.log(err));
 
 }
 document.getElementById("nama").innerText =
