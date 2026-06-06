@@ -10,7 +10,38 @@ background:transparent;
 overflow:hidden;
 font-family:Arial;
 }
+#targetBox{
+position:absolute;
+left:20px;
+top:20px;
 
+background:#111;
+color:white;
+
+padding:15px;
+border-radius:15px;
+
+width:350px;
+}
+
+#barBg{
+width:100%;
+height:20px;
+
+background:#333;
+border-radius:20px;
+
+overflow:hidden;
+margin-top:10px;
+}
+
+#barFill{
+width:0%;
+height:100%;
+
+background:#00ff88;
+transition:1s;
+}
 #box{
 position:absolute;
 top:20px;
@@ -110,15 +141,45 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
+const TARGET = 500000;
 const q = query(
 collection(db,"donasi"),
 orderBy("waktu","desc"),
 limit(1)
 );
 let lastId = "";
-onSnapshot(q,(snapshot)=>{
+import {
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+async function updateTarget(){
+
+const snap =
+await getDocs(collection(db,"donasi"));
+
+let total = 0;
+
+snap.forEach(doc=>{
+
+const d = doc.data();
+
+total += Number(d.nominal || 0);
+
+});
+
+document.getElementById("targetText").innerText =
+`Rp ${total} / Rp ${TARGET}`;
+
+const persen =
+Math.min((total / TARGET) * 100,100);
+
+document.getElementById("barFill").style.width =
+persen + "%";
+
+}
+onSnapshot(q,(snapshot)=>{
+updateTarget();
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
