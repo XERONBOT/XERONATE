@@ -103,6 +103,13 @@ margin-top:10px;
 </head>
 <body>
 
+<button id="startAudio">
+Aktifkan Audio
+</button>
+
+<audio id="notifAudio">
+  <source src="donasi.mp3" type="audio/mpeg">
+</audio>
 <audio id="notifAudio">
   <source src="donasi.mp3" type="audio/mpeg">
 </audio>
@@ -294,7 +301,27 @@ suara.pitch = 1;
 speechSynthesis.speak(suara);
 
 }
-</script>
+document
+.getElementById("startAudio")
+.onclick = () => {
 
+const audio =
+document.getElementById("notifAudio");
+
+audio.play()
+.then(()=>{
+
+audio.pause();
+
+audio.currentTime = 0;
+
+});
+
+speechSynthesis.speak(
+new SpeechSynthesisUtterance("Audio aktif")
+);
+
+};
+</script>
 </body>
 </html>
