@@ -105,7 +105,11 @@ onSnapshot(q,(snapshot)=>{
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
-if(doc.id !== lastId){
+if(lastId === ""){
+
+lastId = doc.id;
+
+}else if(doc.id !== lastId){
 
 lastId = doc.id;
 
