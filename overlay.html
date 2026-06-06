@@ -222,7 +222,7 @@ document.getElementById("notifAudio");
 
 audio.currentTime = 0;
 
-audio.play().then(() => {
+audio.play().catch(err => console.log(err));
 
 setTimeout(() => {
 
@@ -230,18 +230,11 @@ bacaPesan(
 `${d.nama} berdonasi ${d.nominal} rupiah`
 );
 
-},1500);
-
-}).catch(err => console.log(err));
 if(d.youtube){
-
-const videoId =
-getYoutubeId(d.youtube);
-
-if(videoId){
 
 document.getElementById("mediaShare")
 .style.display = "block";
+
 document.getElementById("mediaShare")
 .style.background = "red";
 
@@ -261,8 +254,7 @@ document.getElementById("ytPlayer")
 
 }
 
-}  
-}
+},1500);
 document.getElementById("nama").innerText =
 d.nama || "-";
 
