@@ -61,17 +61,7 @@ margin-top:10px;
 
 </head>
 <body>
-function bacaPesan(teks){
 
-const suara = new SpeechSynthesisUtterance(teks);
-
-suara.lang = "id-ID";
-suara.rate = 1;
-suara.pitch = 1;
-
-speechSynthesis.speak(suara);
-
-}
 <audio id="notifAudio">
   <source src="donasi.mp3" type="audio/mpeg">
 </audio>
@@ -131,7 +121,9 @@ lastId = doc.id;
 document.getElementById("notifAudio")
 .play()
 .catch(err => console.log(err));
-
+bacaPesan(
+`${d.nama} berdonasi ${d.nominal} rupiah. ${d.pesan}`
+);
 }
 document.getElementById("nama").innerText =
 d.nama || "-";
@@ -153,7 +145,17 @@ document.getElementById("box").style.display =
 });
 
 });
+function bacaPesan(teks){
 
+const suara = new SpeechSynthesisUtterance(teks);
+
+suara.lang = "id-ID";
+suara.rate = 1;
+suara.pitch = 1;
+
+speechSynthesis.speak(suara);
+
+}
 </script>
 
 </body>
