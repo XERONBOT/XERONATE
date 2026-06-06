@@ -61,7 +61,17 @@ margin-top:10px;
 
 </head>
 <body>
+function bacaPesan(teks){
 
+const suara = new SpeechSynthesisUtterance(teks);
+
+suara.lang = "id-ID";
+suara.rate = 1;
+suara.pitch = 1;
+
+speechSynthesis.speak(suara);
+
+}
 <audio id="notifAudio">
   <source src="donasi.mp3" type="audio/mpeg">
 </audio>
