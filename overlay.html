@@ -210,12 +210,22 @@ lastId = doc.id;
 
 lastId = doc.id;
 
-document.getElementById("notifAudio")
-.play()
-.catch(err => console.log(err));
+const audio =
+document.getElementById("notifAudio");
+
+audio.currentTime = 0;
+
+audio.play().then(() => {
+
+setTimeout(() => {
+
 bacaPesan(
 `${d.nama} berdonasi ${d.nominal} rupiah`
 );
+
+},1500);
+
+}).catch(err => console.log(err));
 if(d.youtube){
 
 const videoId =
