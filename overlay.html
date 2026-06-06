@@ -99,13 +99,19 @@ collection(db,"donasi"),
 orderBy("waktu","desc"),
 limit(1)
 );
-
+let lastId = "";
 onSnapshot(q,(snapshot)=>{
 
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
+if(doc.id !== lastId){
 
+lastId = doc.id;
+
+document.getElementById("notifAudio").play();
+
+}
 document.getElementById("nama").innerText =
 d.nama || "-";
 
