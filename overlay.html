@@ -244,10 +244,13 @@ updateTarget();
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
-if(d.youtube){
+alert("YOUTUBE = " + d.youtube);
 
 document.getElementById("mediaShare")
 .style.display = "block";
+
+document.getElementById("mediaShare")
+.style.background = "red";
 
 document.getElementById("mediaLink")
 .href = d.youtube;
