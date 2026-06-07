@@ -1,0 +1,273 @@
+<!DOCTYPE html><html>
+<head>
+<title>Overlay XERONATE</title><style>
+body{
+margin:0;
+background:transparent;
+overflow:hidden;
+font-family:Arial,sans-serif;
+}
+
+#targetBox{
+position:absolute;
+left:20px;
+top:20px;
+background:#111;
+color:white;
+padding:15px;
+border-radius:15px;
+width:350px;
+}
+
+#barBg{
+width:100%;
+height:20px;
+background:#333;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+#barFill{
+width:0%;
+height:100%;
+background:#00ff88;
+transition:1s;
+}
+
+#box{
+position:absolute;
+top:20px;
+right:20px;
+background:#1e1e1e;
+color:white;
+padding:20px;
+border-radius:15px;
+width:380px;
+display:none;
+box-shadow:0 0 20px rgba(0,0,0,.4);
+animation:masuk .5s ease;
+}
+
+#mediaShare{
+position:absolute;
+bottom:20px;
+left:20px;
+background:#111;
+color:white;
+padding:15px;
+border-radius:15px;
+display:none;
+z-index:9999;
+}
+
+.nama{
+font-size:28px;
+font-weight:bold;
+}
+
+.nominal{
+font-size:34px;
+font-weight:bold;
+color:#00ff88;
+}
+
+.pesan{
+font-size:18px;
+margin-top:10px;
+}
+
+@keyframes masuk{
+from{
+opacity:0;
+transform:translateX(300px);
+}
+to{
+opacity:1;
+transform:translateX(0);
+}
+}
+</style></head>
+<body><button id="startAudio">Aktifkan Audio</button>
+
+<audio id="notifAudio">
+<source src="donasi.mp3" type="audio/mpeg">
+</audio><div id="targetBox">
+<h3>🎯 Target Donasi</h3>
+<div id="targetText">Rp 0 / Rp 500000</div><div id="barBg">
+<div id="barFill"></div>
+</div>
+</div><div id="mediaShare">
+<h3>🎬 Media Share</h3>
+<a id="mediaLink" target="_blank">Buka Video</a>
+</div><div id="box">
+<div class="nama" id="nama"></div>
+<div class="nominal" id="nominal"></div>
+<div class="pesan" id="pesan"></div>
+</div><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+query,
+orderBy,
+limit,
+onSnapshot,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBIJWltMdeQb4zp1c71146hHfv0SFUTcSg",
+authDomain: "xeronate.firebaseapp.com",
+projectId: "xeronate",
+storageBucket: "xeronate.firebasestorage.app",
+messagingSenderId: "82543259196",
+appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const TARGET = 500000;
+let lastId = "";
+
+function bacaPesan(teks){
+
+const suara =
+new SpeechSynthesisUtterance(teks);
+
+suara.lang = "id-ID";
+
+speechSynthesis.speak(suara);
+
+}
+
+async function updateTarget(){
+
+const snap =
+await getDocs(collection(db,"donasi"));
+
+let total = 0;
+
+snap.forEach(doc=>{
+
+const d = doc.data();
+
+total += Number(d.nominal || 0);
+
+});
+
+document.getElementById("targetText").innerText =
+"Rp ${total} / Rp ${TARGET}";
+
+const persen =
+Math.min((total/TARGET)*100,100);
+
+document.getElementById("barFill").style.width =
+persen + "%";
+
+}
+const q = query(
+collection(db,"donasi"),
+orderBy("waktu","desc"),
+limit(1)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+updateTarget();
+
+snapshot.forEach((doc)=>{
+
+const d = doc.data();
+
+if(lastId === ""){
+lastId = doc.id;
+return;
+}
+
+if(doc.id !== lastId){
+
+lastId = doc.id;
+
+const audio =
+document.getElementById("notifAudio");
+
+audio.currentTime = 0;
+
+audio.play().catch(()=>{});
+
+setTimeout(()=>{
+
+bacaPesan(
+"${d.nama} berdonasi ${d.nominal} rupiah"
+);
+
+},1500);
+
+document.getElementById("nama").innerText =
+d.nama || "-";
+
+document.getElementById("nominal").innerText =
+"Rp " + (d.nominal || 0);
+
+document.getElementById("pesan").innerText =
+d.pesan || "";
+
+document.getElementById("box").style.display =
+"block";
+
+setTimeout(()=>{
+
+document.getElementById("box").style.display =
+"none";
+
+},10000);
+
+if(d.youtube){
+
+document.getElementById("mediaShare")
+.style.display = "block";
+
+document.getElementById("mediaLink")
+.href = d.youtube;
+
+setTimeout(()=>{
+
+document.getElementById("mediaShare")
+.style.display = "none";
+
+},15000);
+
+}
+
+}
+
+});
+
+});
+
+document
+.getElementById("startAudio")
+.onclick = () => {
+
+const audio =
+document.getElementById("notifAudio");
+
+audio.play()
+.then(()=>{
+audio.pause();
+audio.currentTime = 0;
+});
+
+speechSynthesis.speak(
+new SpeechSynthesisUtterance("Audio aktif")
+);
+
+};
+
+</script>
+</body>
+</html>
