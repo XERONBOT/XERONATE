@@ -68,7 +68,20 @@ left:50%;
 transform:translate(-50%,-50%);
 z-index:9999;
 }
+#mediaShare{
+position:absolute;
+bottom:20px;
+left:20px;
 
+background:#111;
+color:white;
+
+padding:15px;
+border-radius:15px;
+
+display:none;
+z-index:9999;
+}
 #ytPlayer{
 border-radius:15px;
 }
@@ -127,6 +140,12 @@ Rp 0 / Rp 500000
 
 </div>
 <div id="box">
+  <div id="mediaShare" style="display:none;">
+<h2>🎬 Media Share</h2>
+<a id="mediaLink" target="_blank">
+Buka Video
+</a>
+</div>
 <div id="mediaShare" style="display:none;">
   <iframe
     id="ytPlayer"
@@ -225,7 +244,22 @@ updateTarget();
 snapshot.forEach((doc)=>{
 
 const d = doc.data();
+if(d.youtube){
 
+document.getElementById("mediaShare")
+.style.display = "block";
+
+document.getElementById("mediaLink")
+.href = d.youtube;
+
+setTimeout(()=>{
+
+document.getElementById("mediaShare")
+.style.display = "none";
+
+},15000);
+
+}
 if(lastId === ""){
 
 lastId = doc.id;
