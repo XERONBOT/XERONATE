@@ -161,12 +161,15 @@ snap.forEach(doc=>{
 
 const d = doc.data();
 
-total += Number(d.nominal || 0);
+const nominal =
+parseInt(d.nominal) || 0;
+
+total += nominal;
 
 });
 
 document.getElementById("targetText").innerText =
-"Rp ${total} / Rp ${TARGET}";
+`Rp ${total.toLocaleString("id-ID")} / Rp ${TARGET.toLocaleString("id-ID")}`;
 
 const persen =
 Math.min((total/TARGET)*100,100);
