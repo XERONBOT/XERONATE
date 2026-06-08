@@ -138,9 +138,73 @@ const db = getFirestore(app);
 
 const TARGET = 500000;
 let lastId = "";
-
+let queue = [];
+let sedangJalan = false;
 function bacaPesan(teks){
+async function prosesQueue(){
 
+if(sedangJalan) return;
+
+sedangJalan = true;
+
+while(queue.length > 0){
+
+const d = queue.shift();
+
+const audio =
+document.getElementById("notifAudio");
+
+audio.currentTime = 0;
+
+try{
+await audio.play();
+}catch(e){}
+
+document.getElementById("nama").innerText =
+d.nama || "-";
+
+document.getElementById("nominal").innerText =
+"Rp " + (d.nominal || 0);
+
+document.getElementById("pesan").innerText =
+d.pesan || "";
+
+document.getElementById("box").style.display =
+"block";
+
+setTimeout(()=>{
+
+bacaPesan(
+`${d.nama} berdonasi ${d.nominal} rupiah`
+);
+
+},1500);
+
+if(d.youtube){
+
+document.getElementById("mediaShare")
+.style.display = "block";
+
+document.getElementById("mediaLink")
+.href = d.youtube;
+
+}
+
+await new Promise(resolve =>
+setTimeout(resolve,10000)
+);
+
+document.getElementById("box").style.display =
+"none";
+
+document.getElementById("mediaShare")
+.style.display = "none";
+
+}
+
+sedangJalan = false;
+
+}
 const suara =
 new SpeechSynthesisUtterance(teks);
 
@@ -200,6 +264,12 @@ return;
 if(doc.id !== lastId){
 
 lastId = doc.id;
+
+queue.push(d);
+
+prosesQueue();
+
+}
 
 const audio =
 document.getElementById("notifAudio");
