@@ -149,6 +149,16 @@ suara.lang = "id-ID";
 speechSynthesis.speak(suara);
 
 }
+function getYoutubeId(url){
+
+const reg =
+/(?:youtube.com.*v=|youtu.be/)([^&]+)/;
+
+const match = url.match(reg);
+
+return match ? match[1] : null;
+
+}
 async function prosesQueue(){
 
 if(sedangJalan) return;
@@ -193,11 +203,19 @@ d.youtube &&
 Number(d.nominal) >= 10000
 ){
 
+const videoId =
+getYoutubeId(d.youtube);
+
+if(videoId){
+
 document.getElementById("mediaShare")
 .style.display = "block";
 
-document.getElementById("mediaLink")
-.href = d.youtube;
+document.getElementById("ytPlayer")
+.src =
+"https://www.youtube.com/embed/${videoId}?autoplay=1";
+
+}
 
 }
 
@@ -210,7 +228,8 @@ document.getElementById("box").style.display =
 
 document.getElementById("mediaShare")
 .style.display = "none";
-
+document.getElementById("ytPlayer")
+.src = "";
 }
 
 sedangJalan = false;
