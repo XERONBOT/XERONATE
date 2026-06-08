@@ -60,7 +60,20 @@ background:#000;
 padding:10px;
 border-radius:15px;
 }
+#mediaProgressBg{
+width:100%;
+height:8px;
+background:#333;
+margin-top:5px;
+border-radius:20px;
+overflow:hidden;
+}
 
+#mediaProgress{
+width:100%;
+height:100%;
+background:#00ff88;
+}
 .nama{
 font-size:28px;
 font-weight:bold;
@@ -102,6 +115,7 @@ transform:translateX(0);
 </div>
 </div>
 <div id="mediaShare" style="display:none;">
+
   <iframe
     id="ytPlayer"
     width="640"
@@ -111,6 +125,11 @@ transform:translateX(0);
     allow="autoplay"
     allowfullscreen>
   </iframe>
+
+  <div id="mediaProgressBg">
+    <div id="mediaProgress"></div>
+  </div>
+
 </div>
 <div id="box">
 <div class="nama" id="nama"></div>
@@ -239,7 +258,20 @@ durasi = 120000;
 
 document.getElementById("mediaShare")
 .style.display = "block";
+const progress =
+document.getElementById("mediaProgress");
 
+progress.style.transition = "none";
+progress.style.width = "100%";
+
+setTimeout(()=>{
+
+progress.style.transition =
+`width ${durasi}ms linear`;
+
+progress.style.width = "0%";
+
+},50);
 document.getElementById("ytPlayer")
 .src =
 `https://www.youtube.com/embed/${videoId}?autoplay=1`;
