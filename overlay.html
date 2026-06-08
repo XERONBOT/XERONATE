@@ -142,8 +142,7 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-document.getElementById("mediaShare")
-.style.display = "block"; 
+
 console.log("Firebase berhasil terhubung");
 const TARGET = 500000;
 let lastId = "";
@@ -161,14 +160,14 @@ speechSynthesis.speak(suara);
   
 function getYoutubeId(url){
 
+if(!url) return null;
+
 if(url.includes("/live/")){
-
 return url.split("/live/")[1].split("?")[0];
-
 }
 
 const reg =
-/(?:youtube.com.*v=|youtu.be/)([^&]+)/;
+/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/;
 
 const match = url.match(reg);
 
@@ -221,9 +220,7 @@ Number(d.nominal) >= 10000
 
 const videoId =
 getYoutubeId(d.youtube);
-alert("VIDEO ID = " + videoId);
-alert("LINK = " + d.youtube);
-alert("VIDEO ID = " + videoId);
+
 if(videoId){
 
 document.getElementById("mediaShare")
@@ -232,6 +229,16 @@ document.getElementById("mediaShare")
 document.getElementById("ytPlayer")
 .src =
 `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+setTimeout(()=>{
+
+document.getElementById("mediaShare")
+.style.display = "none";
+
+document.getElementById("ytPlayer")
+.src = "";
+
+},30000);
 
 }
 
@@ -244,10 +251,7 @@ setTimeout(resolve,10000)
 document.getElementById("box").style.display =
 "none";
 
-document.getElementById("mediaShare")
-.style.display = "none";
-document.getElementById("ytPlayer")
-.src = "";
+
 }
 
 sedangJalan = false;
