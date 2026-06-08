@@ -271,57 +271,6 @@ queue.push(d);
 prosesQueue();
 
 }
-lastId = doc.id;
-const audio =
-document.getElementById("notifAudio");
-
-audio.currentTime = 0;
-
-audio.play().catch(()=>{});
-
-setTimeout(()=>{
-
-bacaPesan(
-`${d.nama} berdonasi ${d.nominal} rupiah`
-);
-
-},1500);
-
-document.getElementById("nama").innerText =
-d.nama || "-";
-
-document.getElementById("nominal").innerText =
-"Rp " + (d.nominal || 0);
-
-document.getElementById("pesan").innerText =
-d.pesan || "";
-
-document.getElementById("box").style.display =
-"block";
-
-setTimeout(()=>{
-
-document.getElementById("box").style.display =
-"none";
-
-},10000);
-
-if(d.youtube){
-
-document.getElementById("mediaShare")
-.style.display = "block";
-
-document.getElementById("mediaLink")
-.href = d.youtube;
-
-setTimeout(()=>{
-
-document.getElementById("mediaShare")
-.style.display = "none";
-
-},15000);
-
-}
 
 }
 
