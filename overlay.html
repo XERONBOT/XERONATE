@@ -142,6 +142,8 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+document.getElementById("mediaShare")
+.style.display = "block"; 
 console.log("Firebase berhasil terhubung");
 const TARGET = 500000;
 let lastId = "";
