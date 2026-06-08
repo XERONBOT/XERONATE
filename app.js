@@ -28,7 +28,18 @@ window.kirimDonasi = async function () {
     pesan: document.getElementById("pesan").value,
     youtube: document.getElementById("youtube").value,
     waktu: new Date().toISOString()
-  };
+  
+    if(
+youtube &&
+Number(nominal) < 10000
+){
+
+alert(
+"Minimal donasi Media Share adalah Rp10.000"
+);
+
+return;
+
 
   try {
 
@@ -41,18 +52,6 @@ window.kirimDonasi = async function () {
     alert("Error: " + e.message);
 
   }
-  if(
-youtube &&
-Number(nominal) < 10000
-){
-
-alert(
-"Minimal donasi Media Share adalah Rp10.000"
-);
-
-return;
-
-}
 };
 
 window.lihatData = function () {
