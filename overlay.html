@@ -74,6 +74,22 @@ width:100%;
 height:100%;
 background:#00ff88;
 }
+ #mediaInfo{
+margin-bottom:10px;
+text-align:center;
+color:white;
+}
+
+#mediaNama{
+font-size:24px;
+font-weight:bold;
+}
+
+#mediaNominal{
+font-size:20px;
+color:#00ff88;
+font-weight:bold;
+} 
 .nama{
 font-size:28px;
 font-weight:bold;
@@ -261,6 +277,14 @@ durasi = 120000;
 
 document.getElementById("mediaShare")
 .style.display = "block";
+document.getElementById("mediaNama")
+.innerText = d.nama;
+
+document.getElementById("mediaNominal")
+.innerText =
+"Rp " +
+Number(d.nominal)
+.toLocaleString("id-ID"); 
 const progress =
 document.getElementById("mediaProgress");
 
