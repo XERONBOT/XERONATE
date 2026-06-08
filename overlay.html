@@ -208,7 +208,7 @@ document.getElementById("box").style.display =
 setTimeout(()=>{
 
 bacaPesan(
-`${d.nama} berdonasi ${d.nominal} rupiah`
+`${d.nama} berdonasi ${d.nominal} rupiah. Terima kasih.`
 );
 
 },1500);
@@ -222,6 +222,20 @@ const videoId =
 getYoutubeId(d.youtube);
 
 if(videoId){
+
+let durasi = 30000;
+
+if(Number(d.nominal) >= 25000){
+durasi = 60000;
+}
+
+if(Number(d.nominal) >= 50000){
+durasi = 90000;
+}
+
+if(Number(d.nominal) >= 100000){
+durasi = 120000;
+}
 
 document.getElementById("mediaShare")
 .style.display = "block";
@@ -238,7 +252,7 @@ document.getElementById("mediaShare")
 document.getElementById("ytPlayer")
 .src = "";
 
-},30000);
+},durasi);
 
 }
 
