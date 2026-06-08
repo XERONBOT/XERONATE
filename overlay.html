@@ -262,7 +262,7 @@ total += Number(d.nominal || 0);
 });
 
 document.getElementById("targetText").innerText =
-"Rp ${total.toLocaleString("id-ID")} / Rp ${TARGET.toLocaleString("id-ID")}";
+`Rp ${total.toLocaleString("id-ID")} / Rp ${TARGET.toLocaleString("id-ID")}`;
 
 const persen =
 Math.min((total/TARGET)*100,100);
@@ -279,6 +279,7 @@ console.log(err);
 }
 const q = query(
 collection(db,"donasi"),
+orderBy("waktu","desc"),
 limit(1)
 );
 
