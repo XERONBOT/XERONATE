@@ -23,7 +23,8 @@ position:absolute;
 left:20px;
 top:150px;
 
-background:#111;
+background:rgba(15,15,15,.85);
+backdrop-filter:blur(10px);
 color:white;
 
 padding:15px;
@@ -85,7 +86,19 @@ margin-top:10px;
 #barFill{
 width:0%;
 height:100%;
-background:#00ff88;
+
+background:
+linear-gradient(
+90deg,
+#00ff88,
+#00ffaa,
+#00ff88
+);
+
+background-size:200%;
+
+animation:glowBar 2s linear infinite;
+
 transition:1s;
 }
 
@@ -101,6 +114,9 @@ width:380px;
 display:none;
 box-shadow:0 0 20px rgba(0,0,0,.4);
 animation:masuk .5s ease;
+animation:
+masuk .5s ease,
+pulseGlow 2s infinite;
 }
 
 #mediaShare{
@@ -164,7 +180,53 @@ color:#00ff88;
 font-size:18px;
 margin-top:10px;
 }
+#brand{
 
+position:absolute;
+top:20px;
+right:20px;
+
+font-size:32px;
+font-weight:bold;
+
+color:#00ff88;
+
+text-shadow:
+0 0 10px #00ff88,
+0 0 20px #00ff88,
+0 0 40px #00ff88;
+
+z-index:99999;
+
+animation:pulseBrand 2s infinite;
+
+}
+@keyframes pulseBrand{
+
+0%{
+opacity:.8;
+}
+
+50%{
+opacity:1;
+}
+
+100%{
+opacity:.8;
+}
+
+}
+@keyframes glowBar{
+
+0%{
+background-position:0%;
+}
+
+100%{
+background-position:200%;
+}
+
+}
 @keyframes masuk{
 from{
 opacity:0;
@@ -175,8 +237,23 @@ opacity:1;
 transform:translateX(0);
 }
 }
+#targetBox,
+#leaderboard,
+#recentBox,
+#statsBox,
+#box{
+
+border:2px solid #00ff88;
+
+box-shadow:
+0 0 10px #00ff88,
+0 0 20px #00ff88;
+} 
 </style>
 </head>
+ <div id="brand">
+⚡ XERONATE LIVE ⚡
+</div>
 <body><button id="startAudio">Aktifkan Audio</button>
 
 <audio id="notifAudio">
