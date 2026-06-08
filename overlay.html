@@ -142,7 +142,7 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
+console.log("Firebase berhasil terhubung");
 const TARGET = 500000;
 let lastId = "";
 let queue = [];
@@ -158,8 +158,8 @@ speechSynthesis.speak(suara);
 }
 function getYoutubeId(url){
 
-const reg =
-/(?:youtube.com.*v=|youtu.be/)([^&]+)/;
+const reg = 
+/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/
 
 const match = url.match(reg);
 
@@ -246,6 +246,8 @@ sedangJalan = false;
 
 async function updateTarget(){
 
+try{
+
 const snap =
 await getDocs(collection(db,"donasi"));
 
@@ -255,15 +257,12 @@ snap.forEach(doc=>{
 
 const d = doc.data();
 
-const nominal =
-parseInt(d.nominal) || 0;
-
-total += nominal;
+total += Number(d.nominal || 0);
 
 });
 
 document.getElementById("targetText").innerText =
-`Rp ${total.toLocaleString("id-ID")} / Rp ${TARGET.toLocaleString("id-ID")}`;
+"Rp ${total.toLocaleString("id-ID")} / Rp ${TARGET.toLocaleString("id-ID")}";
 
 const persen =
 Math.min((total/TARGET)*100,100);
@@ -271,10 +270,15 @@ Math.min((total/TARGET)*100,100);
 document.getElementById("barFill").style.width =
 persen + "%";
 
+}catch(err){
+
+console.log(err);
+
+}
+
 }
 const q = query(
 collection(db,"donasi"),
-orderBy("waktu","desc"),
 limit(1)
 );
 
