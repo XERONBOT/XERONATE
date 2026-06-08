@@ -141,6 +141,14 @@ let lastId = "";
 let queue = [];
 let sedangJalan = false;
 function bacaPesan(teks){
+const suara =
+new SpeechSynthesisUtterance(teks);
+
+suara.lang = "id-ID";
+
+speechSynthesis.speak(suara);
+
+}
 async function prosesQueue(){
 
 if(sedangJalan) return;
@@ -205,14 +213,7 @@ document.getElementById("mediaShare")
 sedangJalan = false;
 
 }
-const suara =
-new SpeechSynthesisUtterance(teks);
 
-suara.lang = "id-ID";
-
-speechSynthesis.speak(suara);
-
-}
 
 async function updateTarget(){
 
