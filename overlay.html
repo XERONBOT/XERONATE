@@ -188,7 +188,10 @@ bacaPesan(
 
 },1500);
 
-if(d.youtube){
+if(
+d.youtube &&
+Number(d.nominal) >= 10000
+){
 
 document.getElementById("mediaShare")
 .style.display = "block";
