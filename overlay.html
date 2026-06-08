@@ -159,9 +159,16 @@ speechSynthesis.speak(suara);
 
 }
 function getYoutubeId(url){
+function getYoutubeId(url){
 
-const reg = 
-/(?:youtube\.com.*v=|youtu\.be\/)([^&]+)/
+if(url.includes("/live/")){
+
+return url.split("/live/")[1].split("?")[0];
+
+}
+
+const reg =
+/(?:youtube.com.*v=|youtu.be/)([^&]+)/;
 
 const match = url.match(reg);
 
