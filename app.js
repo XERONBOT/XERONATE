@@ -22,36 +22,51 @@ const db = getFirestore(app);
 
 window.kirimDonasi = async function () {
 
-  const data = {
-    nama: document.getElementById("nama").value,
-    nominal: document.getElementById("nominal").value,
-    pesan: document.getElementById("pesan").value,
-    youtube: document.getElementById("youtube").value,
-    waktu: new Date().toISOString()
-  
-    if(
+const nama =
+document.getElementById("nama").value;
+
+const nominal =
+document.getElementById("nominal").value;
+
+const pesan =
+document.getElementById("pesan").value;
+
+const youtube =
+document.getElementById("youtube").value;
+
+if(
 youtube &&
 Number(nominal) < 10000
 ){
-
 alert(
 "Minimal donasi Media Share adalah Rp10.000"
 );
-
 return;
+}
 
+const data = {
+nama,
+nominal,
+pesan,
+youtube,
+waktu: new Date().toISOString()
+};
 
-  try {
+try {
 
-    await addDoc(collection(db, "donasi"), data);
+await addDoc(
+  collection(db, "donasi"),
+  data
+);
 
-    alert("Donasi berhasil disimpan!");
+alert("Donasi berhasil disimpan!");
 
-  } catch (e) {
+} catch (e) {
 
-    alert("Error: " + e.message);
+alert("Error: " + e.message);
 
-  }
+}
+
 };
 
 window.lihatData = function () {
