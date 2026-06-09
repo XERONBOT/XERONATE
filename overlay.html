@@ -303,6 +303,36 @@ color:#00ff88;
 margin-top:10px;
 
 }
+ #adminPanel{
+
+position:fixed;
+
+left:20px;
+bottom:20px;
+
+z-index:999999;
+
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+}
+
+#adminPanel button{
+
+background:#00ff88;
+
+border:none;
+
+padding:10px 15px;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
 </style>
 </head>
  <div id="brand">
@@ -801,6 +831,59 @@ prosesQueue();
 
 });
 
+ window.testDonasi = function(){
+
+queue.push({
+
+nama:"XERON TEST",
+
+nominal:10000,
+
+pesan:"Ini test alert",
+
+youtube:""
+
+});
+
+prosesQueue();
+
+}
+ window.testVip = function(){
+
+queue.push({
+
+nama:"VIP TEST",
+
+nominal:100000,
+
+pesan:"VIP DONATION",
+
+youtube:""
+
+});
+
+prosesQueue();
+
+}
+ window.testMedia = function(){
+
+queue.push({
+
+nama:"MEDIA TEST",
+
+nominal:10000,
+
+pesan:"Media Share",
+
+youtube:
+"https://youtu.be/dQw4w9WgXcQ"
+
+});
+
+prosesQueue();
+
+}
+ 
 document
 .getElementById("startAudio")
 .onclick = () => {
@@ -821,5 +904,21 @@ new SpeechSynthesisUtterance("Audio aktif")
 };
 
 </script>
+ <div id="adminPanel">
+
+<button onclick="testDonasi()">
+Test Donasi
+</button>
+
+<button onclick="testVip()">
+Test VIP
+</button>
+
+<button onclick="testMedia()">
+Test Media
+</button>
+
+
+</div>
 </body>
 </html>
