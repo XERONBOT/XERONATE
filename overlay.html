@@ -311,6 +311,9 @@ margin-top:10px;
 <body><button id="startAudio">Aktifkan Audio</button>
 
 <audio id="notifAudio">
+ <audio id="vipSound">
+<source src="vip.mp3" type="audio/mpeg">
+</audio>
 <source src="donasi.mp3" type="audio/mpeg">
 </audio><div id="targetBox">
  <div id="leaderboard">
@@ -474,6 +477,19 @@ document.getElementById("vipBox")
 },8000);
 
 }
+if(Number(d.nominal) >= 100000){
+
+const vipSound =
+document.getElementById("vipSound");
+
+vipSound.currentTime = 0;
+
+try{
+await vipSound.play();
+}catch(e){}
+
+}else{
+
 const audio =
 document.getElementById("notifAudio");
 
@@ -482,6 +498,8 @@ audio.currentTime = 0;
 try{
 await audio.play();
 }catch(e){}
+
+}
 
 document.getElementById("nama").innerText =
 d.nama || "-";
