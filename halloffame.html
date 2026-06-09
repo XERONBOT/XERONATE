@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Hall Of Fame XERONATE
+</title>
+<style>
+body{
+background:#111;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+#hallList{
+margin-top:20px;
+}
+
+.item{
+
+background:#1e1e1e;
+
+padding:15px;
+
+margin-bottom:10px;
+
+border-radius:10px;
+
+border:1px solid #00ff88;
+
+}
+</style>
+</head>
+
+<body>
+<h1>🏆 Hall of Fame XERONATE</h1>
+
+<div id="hallList">
+Loading...
+</div>
+<h1>
+🏆 Hall Of Fame XERONATE
+</h1>
+
+<div id="hallList">
+
+Loading...
+
+</div>
+<script type="module">
+const firebaseConfig = {
+apiKey: "AIzaSyBIJWltMdeQb4zp1c71146hHfv0SFUTcSg",
+authDomain: "xeronate.firebaseapp.com",
+projectId: "xeronate",
+storageBucket: "xeronate.firebasestorage.app",
+messagingSenderId: "82543259196",
+appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
+};
+const snap =
+await getDocs(collection(db,"donasi"));
+
+const data = {};
+
+snap.forEach(doc=>{
+
+const d = doc.data();
+
+const nama =
+d.nama || "Anonim";
+
+const nominal =
+Number(d.nominal || 0);
+
+if(!data[nama]){
+data[nama] = 0;
+}
+
+data[nama] += nominal;
+
+});
+
+const ranking =
+Object.entries(data)
+.sort((a,b)=>b[1]-a[1]);
+
+const top10 =
+ranking.slice(0,10);
+
+let html = "";
+
+top10.forEach((item,index)=>{
+
+html += `
+
+<div class="item">
+
+#${index+1}
+
+${item[0]}
+
+-
+
+Rp ${item[1].toLocaleString("id-ID")}
+
+</div>
+
+`;
+
+});
+
+document
+.getElementById("hallList")
+.innerHTML = html;
+
+
+</script>
+</body>
+
+</html>
