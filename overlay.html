@@ -410,13 +410,16 @@ document.getElementById("box").style.display =
 "block";
 
 setTimeout(()=>{
+setTimeout(()=>{
 
 let teksTTS =
-`${d.nama} berdonasi ${d.nominal} rupiah`;
+`Terima kasih ${d.nama},
+telah berdonasi sebesar
+${d.nominal} rupiah`;
 
 if(d.pesan){
 
-teksTTS += `. Pesan: ${d.pesan}`;
+teksTTS += `. ${d.pesan}`;
 
 }
 
