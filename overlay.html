@@ -249,6 +249,60 @@ box-shadow:
 0 0 10px #00ff88,
 0 0 20px #00ff88;
 } 
+ #vipBox{
+
+position:fixed;
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+display:none;
+
+background:#111;
+
+padding:30px;
+
+border-radius:20px;
+
+border:3px solid gold;
+
+color:white;
+
+text-align:center;
+
+z-index:999999;
+
+box-shadow:
+0 0 20px gold,
+0 0 50px gold;
+
+}
+
+#vipTitle{
+
+font-size:32px;
+font-weight:bold;
+color:gold;
+
+}
+
+#vipNama{
+
+font-size:28px;
+margin-top:15px;
+
+}
+
+#vipNominal{
+
+font-size:40px;
+font-weight:bold;
+color:#00ff88;
+
+margin-top:10px;
+
+}
 </style>
 </head>
  <div id="brand">
@@ -314,6 +368,17 @@ Belum ada donasi
   <div id="mediaProgressBg">
     <div id="mediaProgress"></div>
   </div>
+
+</div>
+ <div id="vipBox">
+
+<div id="vipTitle">
+⭐ DONATUR VIP ⭐
+</div>
+
+<div id="vipNama"></div>
+
+<div id="vipNominal"></div>
 
 </div>
 <div id="box">
@@ -387,7 +452,28 @@ sedangJalan = true;
 while(queue.length > 0){
 
 const d = queue.shift();
+if(Number(d.nominal) >= 100000){
 
+document.getElementById("vipBox")
+.style.display = "block";
+
+document.getElementById("vipNama")
+.innerText = d.nama;
+
+document.getElementById("vipNominal")
+.innerText =
+"Rp " +
+Number(d.nominal)
+.toLocaleString("id-ID");
+
+setTimeout(()=>{
+
+document.getElementById("vipBox")
+.style.display = "none";
+
+},8000);
+
+}
 const audio =
 document.getElementById("notifAudio");
 
