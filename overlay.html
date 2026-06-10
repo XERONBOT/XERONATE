@@ -468,7 +468,12 @@ pauseMediaShare;
 
 pauseMediaShare =
 data.pauseMediaShare || false;
-
+document
+.getElementById("pauseBtn")
+.innerText =
+pauseMediaShare
+? "Resume Media"
+: "Pause Media";
 // BARU DI PAUSE
 
 if(
@@ -493,6 +498,7 @@ currentMedia
 );
 
 currentMedia = null;
+sedangJalan = false;
 
 console.log(
 "Media di-pause"
@@ -1024,9 +1030,10 @@ Test VIP
 Test Media
 </button>
 
- <button onclick="togglePauseMedia()">
+ <button id="pauseBtn"
+onclick="togglePauseMedia()">
 Pause Media
-</button> 
+ </button>
 
 </div>
 </body>
