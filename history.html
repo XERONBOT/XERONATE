@@ -153,11 +153,19 @@ semuaData.push(doc.data());
 });
 
 renderData();
-let total = 0;
+
 }
+
 
 function renderData(){
 
+let total = 0;
+
+const keyword =
+document
+.getElementById("search")
+.value
+.toLowerCase();
 const keyword =
 document
 .getElementById("search")
