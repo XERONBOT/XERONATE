@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Riwayat Donasi XERONATE</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+h1{
+color:#00ff88;
+}
+
+#search{
+width:100%;
+padding:12px;
+margin-bottom:20px;
+font-size:16px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #333;
+text-align:left;
+}
+
+th{
+color:#00ff88;
+}
+
+tr:hover{
+background:#1a1a1a;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>📜 Riwayat Donasi XERONATE</h1>
+
+<input
+id="search"
+placeholder="Cari Nama Donatur..."
+>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Nama</th>
+<th>Nominal</th>
+<th>Pesan</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable">
+
+</tbody>
+
+</table>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+query,
+orderBy
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyBIJWltMdeQb4zp1c71146hHfv0SFUTcSg",
+
+authDomain: "xeronate.firebaseapp.com",
+
+projectId: "xeronate",
+
+storageBucket: "xeronate.firebasestorage.app",
+
+messagingSenderId: "82543259196",
+
+appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+let semuaData = [];
+
+async function loadData(){
+
+const q =
+query(
+collection(db,"donasi"),
+orderBy("waktu","desc")
+);
+
+const snap =
+await getDocs(q);
+
+semuaData = [];
+
+snap.forEach(doc=>{
+
+semuaData.push(doc.data());
+
+});
+
+renderData();
+
+}
+
+function renderData(){
+
+const keyword =
+document
+.getElementById("search")
+.value
+.toLowerCase();
+
+let html = "";
+
+semuaData.forEach(d=>{
+
+const nama =
+(d.nama || "Anonim");
+
+if(
+!nama.toLowerCase()
+.includes(keyword)
+){
+return;
+}
+
+html += `
+
+<tr>
+
+<td>${nama}</td>
+
+<td>
+Rp ${Number(
+d.nominal || 0
+).toLocaleString("id-ID")}
+</td>
+
+<td>
+${d.pesan || "-"}
+</td>
+
+</tr>
+
+`;
+
+});
+
+document
+.getElementById("historyTable")
+.innerHTML = html;
+
+}
+
+document
+.getElementById("search")
+.addEventListener(
+"input",
+renderData
+);
+
+loadData();
+
+</script>
+
+</body>
+</html>
