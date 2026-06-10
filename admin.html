@@ -33,6 +33,21 @@ cursor:pointer;
 <div id="panel">
 
 <h2>Dashboard Admin</h2>
+
+<h3>⚙️ Kontrol Sistem</h3>
+
+<button id="pauseDonasi">
+⏸ Pause Donasi
+</button>
+
+<button id="pauseMedia">
+⏸ Pause Media Share
+</button>
+
+<p id="status"></p>
+
+<hr>
+
 <div id="list"></div>
 
 </div>
@@ -44,7 +59,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
 getFirestore,
 collection,
-onSnapshot
+onSnapshot,
+doc,
+getDoc,
+updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -79,9 +97,16 @@ const email = result.user.email;
 // 🔒 GANTI EMAIL ADMIN KAMU DI SINI
 if(email === "aruelzta9@gmail.com"){
 
-document.getElementById("panel").style.display = "block";
+document
+.getElementById("panel")
+.style.display =
+"block";
 
 loadData();
+
+loadSystem();
+
+}
 
 }else{
 
@@ -123,7 +148,82 @@ ${d.pesan}
 });
 
 }
+async function loadSystem(){
 
+const snap =
+await getDoc(
+doc(db,"settings","system")
+);
+
+const data =
+snap.data();
+
+document
+.getElementById("status")
+.innerHTML =
+
+`
+Donasi :
+${data.pauseDonasi ? "⛔ PAUSE" : "✅ AKTIF"}
+
+<br><br>
+
+Media Share :
+${data.pauseMediaShare ? "⛔ PAUSE" : "✅ AKTIF"}
+`;
+
+}
+
+document
+.getElementById("pauseDonasi")
+.onclick =
+async ()=>{
+
+const ref =
+doc(db,"settings","system");
+
+const snap =
+await getDoc(ref);
+
+const statusSaatIni =
+snap.data().pauseDonasi;
+
+await updateDoc(
+ref,
+{
+pauseDonasi:
+!statusSaatIni
+}
+);
+
+loadSystem();
+
+};
+  document
+.getElementById("pauseMedia")
+.onclick =
+async ()=>{
+
+const ref =
+doc(db,"settings","system");
+
+const snap =
+await getDoc(ref);
+
+const statusSaatIni =
+snap.data().pauseMediaShare;
+
+await updateDoc(
+ref,
+{
+pauseMediaShare:
+!statusSaatIni
+}
+);
+
+loadSystem();
+
+};
 </script>
 
 </body>
