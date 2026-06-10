@@ -43,6 +43,18 @@ tr:hover{
 background:#1a1a1a;
 }
 
+ #summary{
+
+font-size:20px;
+
+margin-bottom:20px;
+
+color:#00ff88;
+
+font-weight:bold;
+
+} 
+  
 </style>
 </head>
 
@@ -54,13 +66,21 @@ background:#1a1a1a;
 id="search"
 placeholder="Cari Nama Donatur..."
 >
+<div id="summary">
 
+Total Donasi:
+<span id="totalDonasi">
+Rp 0
+</span>
+
+</div>
 <table>
 
 <thead>
 
 <tr>
 
+<th>Tanggal</th>  
 <th>Nama</th>
 <th>Nominal</th>
 <th>Pesan</th>
@@ -133,7 +153,7 @@ semuaData.push(doc.data());
 });
 
 renderData();
-
+let total = 0;
 }
 
 function renderData(){
@@ -147,7 +167,9 @@ document
 let html = "";
 
 semuaData.forEach(d=>{
-
+total += Number(
+d.nominal || 0
+);
 const nama =
 (d.nama || "Anonim");
 
@@ -158,9 +180,17 @@ if(
 return;
 }
 
+const tanggal = d.waktu
+? new Date(
+d.waktu.seconds * 1000
+).toLocaleString("id-ID")
+: "-";
+
 html += `
 
 <tr>
+
+<td>${tanggal}</td>
 
 <td>${nama}</td>
 
@@ -175,6 +205,8 @@ ${d.pesan || "-"}
 </td>
 
 </tr>
+
+
 
 `;
 
@@ -192,7 +224,11 @@ document
 "input",
 renderData
 );
-
+document
+.getElementById("totalDonasi")
+.innerText =
+"Rp " +
+total.toLocaleString("id-ID");
 loadData();
 
 </script>
