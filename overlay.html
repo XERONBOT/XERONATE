@@ -338,7 +338,8 @@ cursor:pointer;
  <div id="brand">
 ⚡ XERONATE LIVE ⚡
 </div>
-<body><button id="startAudio">Aktifkan Audio</button>
+<body>
+ <button id="startAudio">Aktifkan Audio</button>
 
 <audio id="notifAudio">
  <audio id="vipSound">
@@ -431,6 +432,7 @@ limit,
 onSnapshot,
 getDocs,
 getDoc,
+updateDoc,
 doc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -446,6 +448,13 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+let pauseMediaShare = false;
+
+let currentMedia = null;
+
+let mediaTimeout = null;
+ 
 onSnapshot(
 doc(db,"settings","system"),
 (snap)=>{
@@ -519,11 +528,7 @@ let queue = [];
 
 let sedangJalan = false;
 
-let pauseMediaShare = false;
 
-let currentMedia = null;
-
-let mediaTimeout = null;
  
 function bacaPesan(teks){
 const suara =
@@ -640,23 +645,6 @@ Number(d.nominal) >= 10000 &&
 !pauseMediaShare
 ){
 
-// CEK PAUSE MEDIA SHARE
-
-const systemSnap =
-await getDoc(
-doc(db,"settings","system")
-);
-
-if(
-systemSnap.exists() &&
-systemSnap.data().pauseMediaShare
-){
-
-console.log(
-"Media Share sedang di-pause"
-);
-
-continue;
 
 }
 
@@ -982,6 +970,26 @@ youtube:
 });
 
 prosesQueue();
+
+}
+
+window.togglePauseMedia = async function(){
+
+const ref =
+doc(db,"settings","system");
+
+const snap =
+await getDoc(ref);
+
+const status =
+snap.data().pauseMediaShare || false;
+
+await updateDoc(
+ref,
+{
+pauseMediaShare: !status
+}
+);
 
 }
  
