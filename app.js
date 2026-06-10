@@ -53,7 +53,22 @@ waktu: new Date().toISOString()
 };
 
 try {
+  
+const system =
+await getDoc(
+doc(db,"settings","system")
+);
 
+if(system.data().pauseDonasi){
+
+alert(
+"Donasi sedang ditutup sementara"
+);
+
+return;
+
+}
+  
 await addDoc(
   collection(db, "donasi"),
   data
