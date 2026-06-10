@@ -107,6 +107,10 @@ document
 .getElementById("saveTheme")
 .onclick = async ()=>{
 
+try{
+
+console.log("Tombol diklik");
+
 await setDoc(
 doc(db,"settings","theme"),
 {
@@ -118,7 +122,17 @@ document.getElementById("warnaBg").value
 }
 );
 
+console.log("Berhasil simpan");
+
 alert("Theme berhasil disimpan!");
+
+}catch(err){
+
+console.error(err);
+
+alert("Error: " + err.message);
+
+}
 
 };
 
