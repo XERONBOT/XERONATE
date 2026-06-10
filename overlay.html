@@ -429,7 +429,9 @@ query,
 orderBy,
 limit,
 onSnapshot,
-getDocs
+getDocs,
+getDoc,
+doc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -563,6 +565,26 @@ if(
 d.youtube &&
 Number(d.nominal) >= 10000
 ){
+
+// CEK PAUSE MEDIA SHARE
+
+const systemSnap =
+await getDoc(
+doc(db,"settings","system")
+);
+
+if(
+systemSnap.exists() &&
+systemSnap.data().pauseMediaShare
+){
+
+console.log(
+"Media Share sedang di-pause"
+);
+
+continue;
+
+}
 
 const videoId =
 getYoutubeId(d.youtube);
