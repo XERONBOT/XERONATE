@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Theme Editor XERONATE</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+padding:20px;
+}
+
+h1{
+color:#00ff88;
+}
+
+input{
+width:100%;
+height:50px;
+margin-bottom:20px;
+}
+
+button{
+padding:12px 20px;
+background:#00ff88;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
+<h1>🎨 Theme Editor</h1>
+
+<label>Warna Utama</label>
+<input type="color" id="warnaUtama" value="#00ff88">
+
+<label>Warna Background</label>
+<input type="color" id="warnaBg" value="#111111">
+
+<button id="saveTheme">
+💾 Simpan Theme
+</button>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyBIJWltMdeQb4zp1c71146hHfv0SFUTcSg",
+
+authDomain: "xeronate.firebaseapp.com",
+
+projectId: "xeronate",
+
+storageBucket: "xeronate.firebasestorage.app",
+
+messagingSenderId: "82543259196",
+
+appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadTheme(){
+
+const snap =
+await getDoc(
+doc(db,"settings","theme")
+);
+
+if(!snap.exists()) return;
+
+const theme = snap.data();
+
+document
+.getElementById("warnaUtama")
+.value =
+theme.warnaUtama;
+
+document
+.getElementById("warnaBg")
+.value =
+theme.warnaBg;
+
+}
+
+document
+.getElementById("saveTheme")
+.onclick = async ()=>{
+
+await setDoc(
+doc(db,"settings","theme"),
+{
+warnaUtama:
+document.getElementById("warnaUtama").value,
+
+warnaBg:
+document.getElementById("warnaBg").value
+}
+);
+
+alert("Theme berhasil disimpan!");
+
+};
+
+loadTheme();
+
+</script>
+
+</body>
+</html>
