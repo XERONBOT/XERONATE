@@ -446,12 +446,85 @@ appId: "1:82543259196:web:7c819c8b74e1931dd35d39"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+onSnapshot(
+doc(db,"settings","system"),
+(snap)=>{
 
+if(!snap.exists()) return;
+
+const data = snap.data();
+
+const statusLama =
+pauseMediaShare;
+
+pauseMediaShare =
+data.pauseMediaShare || false;
+
+// BARU DI PAUSE
+
+if(
+!statusLama &&
+pauseMediaShare
+){
+
+if(currentMedia){
+
+clearTimeout(mediaTimeout);
+
+document
+.getElementById("mediaShare")
+.style.display = "none";
+
+document
+.getElementById("ytPlayer")
+.src = "";
+
+queue.unshift(
+currentMedia
+);
+
+currentMedia = null;
+
+console.log(
+"Media di-pause"
+);
+
+}
+
+}
+
+// BARU DI RESUME
+
+if(
+statusLama &&
+!pauseMediaShare
+){
+
+console.log(
+"Media dilanjutkan"
+);
+
+prosesQueue();
+
+}
+
+}
+);
+ 
 console.log("Firebase berhasil terhubung");
 const TARGET = 500000;
 let lastId = "";
+
 let queue = [];
+
 let sedangJalan = false;
+
+let pauseMediaShare = false;
+
+let currentMedia = null;
+
+let mediaTimeout = null;
+ 
 function bacaPesan(teks){
 const suara =
 new SpeechSynthesisUtterance(teks);
@@ -563,7 +636,8 @@ bacaPesan(teksTTS);
 },1500);
 if(
 d.youtube &&
-Number(d.nominal) >= 10000
+Number(d.nominal) >= 10000 &&
+!pauseMediaShare
 ){
 
 // CEK PAUSE MEDIA SHARE
@@ -590,6 +664,7 @@ const videoId =
 getYoutubeId(d.youtube);
 
 if(videoId){
+currentMedia = d;
 
 let durasi = 30000;
 
@@ -636,14 +711,18 @@ document.getElementById("ytPlayer")
 .src =
 `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
-setTimeout(()=>{
+mediaTimeout = setTimeout(()=>{
+
 document.getElementById("mediaQueue")
 .innerText = "";
+
 document.getElementById("mediaShare")
 .style.display = "none";
 
 document.getElementById("ytPlayer")
 .src = "";
+
+currentMedia = null;
 
 },durasi);
 
