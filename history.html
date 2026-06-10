@@ -185,9 +185,8 @@ return;
 }
 
 const tanggal = d.waktu
-? new Date(
-d.waktu.seconds * 1000
-).toLocaleString("id-ID")
+? d.waktu.toDate()
+.toLocaleString("id-ID")
 : "-";
 
 html += `
