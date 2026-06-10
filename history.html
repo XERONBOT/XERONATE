@@ -54,7 +54,17 @@ color:#00ff88;
 font-weight:bold;
 
 } 
-  
+
+ a{
+color:#00ff88;
+font-weight:bold;
+text-decoration:none;
+}
+
+a:hover{
+text-decoration:underline;
+}
+ 
 </style>
 </head>
 
@@ -84,7 +94,8 @@ Rp 0
 <th>Nama</th>
 <th>Nominal</th>
 <th>Pesan</th>
-
+<th>Media Share</th>
+ 
 </tr>
 
 </thead>
@@ -187,6 +198,9 @@ return;
 const tanggal = new Date(d.waktu)
 .toLocaleString("id-ID");
 
+const link =
+d.youtube || d.videoUrl || "";
+
 html += `
 
 <tr>
@@ -205,8 +219,17 @@ d.nominal || 0
 ${d.pesan || "-"}
 </td>
 
-</tr>
+<td>
+${
+link
+? `<a href="${link}" target="_blank">
+▶️ Video
+</a>`
+: "-"
+}
+</td>
 
+</tr>
 
 
 `;
