@@ -219,7 +219,11 @@ ${d.pesan || "-"}
 `;
 
 });
-
+document
+.getElementById("totalDonasi")
+.innerText =
+"Rp " +
+total.toLocaleString("id-ID");
 document
 .getElementById("historyTable")
 .innerHTML = html;
@@ -232,11 +236,7 @@ document
 "input",
 renderData
 );
-document
-.getElementById("totalDonasi")
-.innerText =
-"Rp " +
-total.toLocaleString("id-ID");
+
 loadData();
 
 </script>
